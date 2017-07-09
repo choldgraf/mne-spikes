@@ -1,7 +1,6 @@
 """Defines small data structures for representing spike trains."""
 
 import numpy as np
-import mne
 
 class Neuron(object):
     def __init__(self, spiketimes, sfreq=1e3, length=None, name=None,
@@ -37,6 +36,10 @@ class Neuron(object):
         return data
 
     def to_mne(self, psth=True):
+        try:
+            import mne
+        except ModuleNotFoundError:
+            raise ModuleNotFoundError('MNE is not installed.')
         info = mne.create_info([self.name], sfreq=self.sfreq, ch_types='misc')
         data = self.spikes[:, np.newaxis, :]  # Add a singleton channel dimension
         if self.events is not None:
