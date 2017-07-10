@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Plot a spike raster with MNE &#8212; mne-spikes 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mnespikes.Neuron" href="../_as_gen/mnespikes.Neuron.html" />
+    <link rel="prev" title="MNE-spikes examples" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="plot-a-spike-raster-with-mne">
+<span id="sphx-glr-examples-plot-spikes-py"></span><h1>Plot a spike raster with MNE<a class="headerlink" href="#plot-a-spike-raster-with-mne" title="Permalink to this headline">¶</a></h1>
+<p>Converting spike times to an MNE object, then plotting.</p>
+<p>First we&#8217;ll generate a bunch of random spike times, corresponding to
+several trials of activity. We&#8217;ll convert these into an mne-spikes <code class="docutils literal"><span class="pre">Neuron</span></code>
+object, then convert this to MNE so we can plot.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mnespikes</span> <span class="kn">import</span> <span class="n">Neuron</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="n">sfreq</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">n_trials</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">time_mean</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span>
+<span class="n">spikes_per_trial</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_trials</span><span class="p">)]</span>
+<span class="n">spiketimes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">.</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="o">+</span> <span class="n">time_mean</span>
+                       <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">spikes_per_trial</span><span class="p">])</span>
+<span class="c1"># Each item is a list of spike times</span>
+<span class="k">print</span><span class="p">(</span><span class="n">spiketimes</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span> <span class="n">array</span><span class="p">([</span> <span class="mf">0.66722683</span><span class="p">,</span>  <span class="mf">0.33323671</span><span class="p">,</span>  <span class="mf">0.51553044</span><span class="p">,</span>  <span class="mf">0.40658874</span><span class="p">,</span>  <span class="mf">0.39529234</span><span class="p">,</span>
+        <span class="mf">0.53585029</span><span class="p">,</span>  <span class="mf">0.6127839</span> <span class="p">,</span>  <span class="mf">0.50695266</span><span class="p">,</span>  <span class="mf">0.53205069</span><span class="p">,</span>  <span class="mf">0.38471946</span><span class="p">,</span>
+        <span class="mf">0.60671676</span><span class="p">,</span>  <span class="mf">0.48705083</span><span class="p">,</span>  <span class="mf">0.59410825</span><span class="p">,</span>  <span class="mf">0.60309165</span><span class="p">,</span>  <span class="mf">0.46646136</span><span class="p">,</span>
+        <span class="mf">0.45866395</span><span class="p">,</span>  <span class="mf">0.64735057</span><span class="p">,</span>  <span class="mf">0.50675484</span><span class="p">,</span>  <span class="mf">0.55247714</span><span class="p">,</span>  <span class="mf">0.48982827</span><span class="p">,</span>
+        <span class="mf">0.52695596</span><span class="p">,</span>  <span class="mf">0.44389474</span><span class="p">,</span>  <span class="mf">0.56210332</span><span class="p">,</span>  <span class="mf">0.39825414</span><span class="p">,</span>  <span class="mf">0.57568046</span><span class="p">,</span>
+        <span class="mf">0.42796571</span><span class="p">,</span>  <span class="mf">0.41038663</span><span class="p">,</span>  <span class="mf">0.50173766</span><span class="p">,</span>  <span class="mf">0.63263754</span><span class="p">,</span>  <span class="mf">0.43788289</span><span class="p">,</span>
+        <span class="mf">0.54435209</span><span class="p">,</span>  <span class="mf">0.50857524</span><span class="p">,</span>  <span class="mf">0.43714812</span><span class="p">,</span>  <span class="mf">0.59375956</span><span class="p">])</span>
+ <span class="n">array</span><span class="p">([</span> <span class="mf">0.60901961</span><span class="p">,</span>  <span class="mf">0.53676778</span><span class="p">,</span>  <span class="mf">0.47675993</span><span class="p">,</span>  <span class="mf">0.46474862</span><span class="p">,</span>  <span class="mf">0.53295847</span><span class="p">,</span>
+        <span class="mf">0.55626456</span><span class="p">,</span>  <span class="mf">0.61471665</span><span class="p">,</span>  <span class="mf">0.37944988</span><span class="p">,</span>  <span class="mf">0.5934255</span> <span class="p">,</span>  <span class="mf">0.50426</span>   <span class="p">,</span>
+        <span class="mf">0.53120292</span><span class="p">,</span>  <span class="mf">0.60483764</span><span class="p">,</span>  <span class="mf">0.62457236</span><span class="p">,</span>  <span class="mf">0.43955385</span><span class="p">,</span>  <span class="mf">0.56044252</span><span class="p">,</span>
+        <span class="mf">0.35473579</span><span class="p">,</span>  <span class="mf">0.49822725</span><span class="p">,</span>  <span class="mf">0.38203688</span><span class="p">,</span>  <span class="mf">0.50957593</span><span class="p">,</span>  <span class="mf">0.60435135</span><span class="p">,</span>
+        <span class="mf">0.38551932</span><span class="p">,</span>  <span class="mf">0.21760594</span><span class="p">,</span>  <span class="mf">0.52452247</span><span class="p">,</span>  <span class="mf">0.6531339</span> <span class="p">,</span>  <span class="mf">0.47592569</span><span class="p">,</span>
+        <span class="mf">0.43360118</span><span class="p">,</span>  <span class="mf">0.35288835</span><span class="p">,</span>  <span class="mf">0.47971432</span><span class="p">,</span>  <span class="mf">0.33684434</span><span class="p">,</span>  <span class="mf">0.5289853</span> <span class="p">,</span>
+        <span class="mf">0.58085966</span><span class="p">,</span>  <span class="mf">0.62695622</span><span class="p">,</span>  <span class="mf">0.63988046</span><span class="p">,</span>  <span class="mf">0.3681957</span> <span class="p">,</span>  <span class="mf">0.6260267</span> <span class="p">,</span>
+        <span class="mf">0.47283131</span><span class="p">,</span>  <span class="mf">0.63605977</span><span class="p">,</span>  <span class="mf">0.48603083</span><span class="p">,</span>  <span class="mf">0.52747773</span><span class="p">,</span>  <span class="mf">0.38989025</span><span class="p">,</span>
+        <span class="mf">0.61100324</span><span class="p">,</span>  <span class="mf">0.41768084</span><span class="p">,</span>  <span class="mf">0.51007186</span><span class="p">,</span>  <span class="mf">0.48451535</span><span class="p">,</span>  <span class="mf">0.43820578</span><span class="p">])]</span>
+</pre></div>
+</div>
+<p>Now we&#8217;ll convert to a Neuron object. We can easily export this to a NumPy
+array, or to an MNE object.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">event_name</span> <span class="o">=</span> <span class="s1">&#39;event!&#39;</span>
+<span class="n">neuron</span> <span class="o">=</span> <span class="n">Neuron</span><span class="p">(</span><span class="n">spiketimes</span><span class="p">,</span> <span class="n">sfreq</span><span class="o">=</span><span class="n">sfreq</span><span class="p">,</span> <span class="n">tmin</span><span class="o">=-.</span><span class="mi">1</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+                <span class="n">events</span><span class="o">=</span><span class="p">[</span><span class="n">event_name</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">spiketimes</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">neuron</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">neuron</span><span class="o">.</span><span class="n">spikes</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">Name</span><span class="p">:</span> <span class="kc">None</span> <span class="o">|</span> <span class="n">Num</span> <span class="n">Events</span><span class="p">:</span> <span class="mi">10</span> <span class="o">|</span> <span class="n">Events</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;event!&#39;</span><span class="p">]</span> <span class="o">|</span> <span class="n">tmin</span><span class="o">/</span><span class="n">tmax</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">160</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now convert to an MNE object, which lets us do fancier plotting / analysis.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="n">neuron</span><span class="o">.</span><span class="n">to_mne</span><span class="p">()</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">plot_image</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">show</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">fig</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="bp">None</span><span class="p">],</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;spikes / s&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_plot_spikes_001.png" class="align-center" src="../_images/sphx_glr_plot_spikes_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="mi">10</span> <span class="n">matching</span> <span class="n">events</span> <span class="n">found</span>
+<span class="mi">0</span> <span class="n">projection</span> <span class="n">items</span> <span class="n">activated</span>
+<span class="mi">0</span> <span class="n">bad</span> <span class="n">epochs</span> <span class="n">dropped</span>
+</pre></div>
+</div>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  2.057 seconds)</p>
+<div class="sphx-glr-footer docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/plot_spikes.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_spikes.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/plot_spikes.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_spikes.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">MNE-spikes examples</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">MNE-spikes examples</a></li>
+      <li>Next: <a href="../_as_gen/mnespikes.Neuron.html" title="next chapter">mnespikes.Neuron</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/examples/plot_spikes.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Chris Holdgraf.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/examples/plot_spikes.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

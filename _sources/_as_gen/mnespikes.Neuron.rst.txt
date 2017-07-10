@@ -1,0 +1,29 @@
+mnespikes\.Neuron
+=================
+
+.. currentmodule:: mnespikes
+
+.. autoclass:: Neuron
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Neuron.__init__
+      ~Neuron.to_mne
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Neuron.spikes
+   
+   

@@ -1,0 +1,6 @@
+mnespikes\.Neuron\.to\_mne
+==========================
+
+.. currentmodule:: mnespikes
+
+.. automethod:: Neuron.to_mne
