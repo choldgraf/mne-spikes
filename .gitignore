@@ -99,3 +99,9 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# Docs
+doc/_build
+doc/examples
+doc/_as_gen
+.DS_Store
